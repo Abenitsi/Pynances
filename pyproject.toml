@@ -1,0 +1,74 @@
+### General ###
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "replace_me"
+version = "0.0.1"
+requires-python = ">=3.11"
+dependencies = [
+    "sqlalchemy >= 2.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "black >= 23.3",
+    "pre-commit >= 3.2",
+    "coverage >= 7.2",
+    "pytest >= 7.3",
+    "mypy >= 1.2",
+    "import-linter >= 1.8",
+    "ulid-py >= 1.1",
+]
+
+### pytest ###
+[tool.pytest.ini_options]
+testpaths = [
+    "src",
+]
+
+
+### Coverage.py ###
+# https://coverage.readthedocs.io/en/7.2.3/config.html#syntax
+
+[tool.coverage.run]
+# Enable branch coverage
+branch = true
+# command to run when coverage run is executed without arguments
+command_line = "-m pytest"
+# List of files, folders and patterns to omit
+omit = [
+    # Do not include any module under a tests directory
+    "**/tests/**",
+]
+
+[tool.coverage.report]
+# Do not show fully covered files on the report
+skip_covered = true
+# The report command will fail unless the specified percentage is reached
+fail_under = 100
+
+
+### mypy ###
+# https://mypy.readthedocs.io/en/stable/config_file.html
+[tool.mypy]
+# Enable strict analysis (see docs)
+strict = true
+disable_error_code = [
+    "override",
+    "type-abstract",
+]
+
+
+### Import Linter ###
+# https://import-linter.readthedocs.io/en/stable/
+[tool.importlinter]
+root_package = "src"
+include_external_packages = true
+
+# [[tool.importlinter.contracts]]
+# id = "example_id"
+# name = "An example contract"
+# type = "forbidden" / "independence" / "layers"
+# type_specific_keys = ...
