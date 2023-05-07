@@ -1,0 +1,8 @@
+FROM hasura/graphql-engine:v2.22.0
+
+RUN curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+
+RUN cd /home/hasura && hasura init .
+
+COPY ./metadata/ ./home/hasura/metadata
+COPY ./migrations/ ./home/hasura/migrations

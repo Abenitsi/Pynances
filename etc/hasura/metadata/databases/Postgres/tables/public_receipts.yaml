@@ -1,0 +1,13 @@
+table:
+  name: receipts
+  schema: public
+object_relationships:
+  - name: lines
+    using:
+      manual_configuration:
+        column_mapping:
+          id: receipt_id
+        insertion_order: null
+        remote_table:
+          name: receipt_lines
+          schema: public

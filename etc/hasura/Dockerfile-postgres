@@ -1,0 +1,6 @@
+FROM postgres:12
+
+RUN apt update && \
+    apt install -y postgresql-12-mysql-fdw
+
+COPY ./db.sql /docker-entrypoint-initdb.d/db.sql
