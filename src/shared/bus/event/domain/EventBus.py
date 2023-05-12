@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+
 from src.shared.bus.event.domain.DomainEvent import DomainEvent
 
 

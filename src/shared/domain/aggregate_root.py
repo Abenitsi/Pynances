@@ -12,10 +12,6 @@ class Entity(ABC):
 class AggregateRoot(Entity):
     __events: list[DomainEvent] = []
 
-    @abstractmethod
-    def __init__(self) -> None:
-        pass
-
     def record(self, event: DomainEvent) -> None:
         self.__events.append(event)
 

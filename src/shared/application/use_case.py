@@ -1,5 +1,5 @@
-from abc import ABCMeta, abstractmethod
-from typing import Callable, ParamSpec, TypeVar
+from abc import ABC, ABCMeta, abstractmethod
+from typing import Any, Callable, ParamSpec, TypeVar
 
 from src.shared.application import middleware_chain
 from src.shared.domain.aggregate_root import AggregateRoot
@@ -10,10 +10,10 @@ P = ParamSpec("P")
 
 class MetaUseCase(ABCMeta):
     def __new__(cls, name: str, bases, attrs):  # type: ignore
-        attrs["__call__"] = cls.chain_middlewares(attrs["__call__"])
+        # attrs["__call__"] = cls.chain_middlewares(attrs["__call__"])
         return super().__new__(cls, name, bases, attrs)
 
-    @staticmethod
+    # @staticmethod
     def chain_middlewares(next: Callable[P, T]) -> Callable[P, T]:
         def run(*args: P.args, **kwargs: P.kwargs) -> T:
             res = next
@@ -25,7 +25,7 @@ class MetaUseCase(ABCMeta):
         return run
 
 
-class UseCase(metaclass=MetaUseCase):
+class UseCase(ABC):
     @abstractmethod
-    def __call__(self) -> None:
+    def __call__(self, *args: Any, **kwargs: Any) -> None:
         pass

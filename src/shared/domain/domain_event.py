@@ -6,7 +6,6 @@ from typing import Any
 from src.shared.domain.valueobject import ULIDValueObject
 
 
-@dataclass(frozen=True)
 class DomainEventId(ULIDValueObject):
     pass
 

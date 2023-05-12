@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
-from src.shared.bus.event.domain.DomainEvent import DomainEvent
 from typing import Any
+
+from src.shared.bus.event.domain.DomainEvent import DomainEvent
 
 
 class EventSubscriber(ABC):

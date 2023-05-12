@@ -16,8 +16,6 @@ from src.write_repository import (
     write_movements,
 )
 
-exit()
-
 
 def categorize(movement: Movement, movements: List[Movement]) -> Movement:
     possible_categories = {}
@@ -57,7 +55,9 @@ for file in list(set(bank_files)):
 
     new_movements = get_movements_factory(accounts[account_id]["type"], sheet)
     movements = read_movements(
-        drive_sheet, accounts[account_id]["spreadsheet"], accounts[account_id]["range"]
+        drive_sheet,
+        accounts[account_id]["spreadsheet"],
+        accounts[account_id]["range"],
     )
 
     last_movement = movements[0]

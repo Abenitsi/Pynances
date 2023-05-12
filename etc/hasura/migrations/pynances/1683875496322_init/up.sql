@@ -4,6 +4,7 @@ CREATE TABLE public.accounts (
     name text NOT NULL,
     iban text NOT NULL,
     hash text NOT NULL,
+    type text NOT NULL,
     amount numeric NOT NULL
 );
 ALTER TABLE ONLY public.accounts

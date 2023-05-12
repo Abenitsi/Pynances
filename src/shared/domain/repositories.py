@@ -1,17 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Type, Any
 
 from src.shared.domain.aggregate_root import AggregateRoot
-
-
-class Connection(ABC):
-    @abstractmethod
-    def write(self, aggregate: AggregateRoot) -> None:
-        pass
-
-    @abstractmethod
-    def read(self, aggregate: Type[AggregateRoot], *filters: Any) -> AggregateRoot:
-        pass
+from src.shared.domain.connection import Connection
 
 
 class Repository(ABC):

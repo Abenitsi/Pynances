@@ -1,12 +1,15 @@
-from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from abc import ABC
 from re import compile, fullmatch
 from typing import Any, Self
 from uuid import UUID, uuid4
 
 import ulid
 
-from src.shared.domain.exception import EmptyValue, InvalidEmailValue, InvalidIdValue
+from src.shared.domain.exception import (
+    EmptyValue,
+    InvalidEmailValue,
+    InvalidIdValue,
+)
 
 
 class ValidatedValueObject(ABC):
@@ -18,7 +21,6 @@ class ValidatedValueObject(ABC):
     @staticmethod
     def _validate(value: Any) -> None:
         """Raise exception if validation is not successful"""
-        pass
 
 
 class StringValueObject(ValidatedValueObject, str):
@@ -32,7 +34,9 @@ class StringValueObject(ValidatedValueObject, str):
 class NonEmptyStringValueObject(StringValueObject):
     @staticmethod
     def _validate(value: Any) -> None:
-        super(NonEmptyStringValueObject, NonEmptyStringValueObject)._validate(value)
+        super(NonEmptyStringValueObject, NonEmptyStringValueObject)._validate(
+            value
+        )
         if len(value) == 0:
             raise EmptyValue()
 

@@ -1,43 +1,15 @@
-from typing import Any, Type, TypeVar, Optional
+from typing import Any, Optional, Type
 
-from sqlalchemy import create_engine, Dialect
-from sqlalchemy.orm import Query, Session
-from sqlalchemy.sql.type_api import _T, TypeEngine
-from sqlalchemy.types import TypeDecorator, String, Integer, Float
+from sqlalchemy import Dialect
+from sqlalchemy.sql.type_api import _T
+from sqlalchemy.types import Float, Integer, String, TypeDecorator
 
-from src.shared.domain.aggregate_root import AggregateRoot
 from src.shared.domain.domain_event import (
     DomainEvent,
     DomainEventId,
     DomainEventRepository,
 )
-from src.shared.domain.repositories import Connection
 from src.shared.infrastructure.exception import ModelNotFound
-
-T = TypeVar("T", bound=AggregateRoot)
-
-
-class SqlAlchemyConnection(Connection):
-    def __init__(
-        self, *, driver: str, user: str, password: str, host: str, db_name: str
-    ):
-        self.connection = Session(
-            create_engine(
-                driver + "://" + user + ":" + password + "@" + host + "/" + db_name
-            )
-        )
-
-    def write(self, aggregate: T) -> None:
-        self.connection.add(aggregate)
-
-    def read(self, aggregate: Type[T], *filters: Any) -> Query[T]:
-        return self.connection.query(aggregate).filter(*filters)
-
-    def begin_transaction(self) -> Any:
-        return self.connection.begin()
-
-    def commit(self) -> None:
-        self.connection.commit()
 
 
 class GenericDecorator(TypeDecorator):  # type: ignore
@@ -57,7 +29,9 @@ class GenericDecorator(TypeDecorator):  # type: ignore
         if value is not None:
             return self.t(value)
 
-    def process_literal_param(self, value: Optional[_T], dialect: Dialect) -> str:
+    def process_literal_param(
+        self, value: Optional[_T], dialect: Dialect
+    ) -> str:
         return str(value)
 
     @property
@@ -65,7 +39,9 @@ class GenericDecorator(TypeDecorator):  # type: ignore
         return self.parent_t
 
 
-def type_decorator_factory(t: type, cache_ok: bool | None = None) -> GenericDecorator:
+def type_decorator_factory(
+    t: type, cache_ok: bool | None = None
+) -> GenericDecorator:
     def sqlalchemy_type_picker(t: type) -> Any:
         if t == int:
             return Integer

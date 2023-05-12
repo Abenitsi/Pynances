@@ -1,14 +1,12 @@
 ### General ###
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [project]
-name = "replace_me"
+name = "src"
 version = "0.0.1"
 requires-python = ">=3.11"
 dependencies = [
-    "sqlalchemy >= 2.0"
+    "sqlalchemy >= 2.0",
+    "psycopg2-binary >= 2.9",
+    "ulid-py >= 1.1",
 ]
 
 [project.optional-dependencies]
@@ -19,8 +17,11 @@ dev = [
     "pytest >= 7.3",
     "mypy >= 1.2",
     "import-linter >= 1.8",
-    "ulid-py >= 1.1",
 ]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 ### pytest ###
 [tool.pytest.ini_options]
@@ -59,6 +60,16 @@ disable_error_code = [
     "override",
     "type-abstract",
 ]
+exclude = [
+    "venv",
+]
+
+[tool.isort]
+profile = "black"
+line_length = 79
+
+[tool.black]
+line-length = 79
 
 
 ### Import Linter ###

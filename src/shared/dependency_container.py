@@ -1,5 +1,5 @@
 import inspect
-from typing import Dict, Self, Type, TypeVar
+from typing import Dict, Self, Type, TypeVar, overload
 
 T = TypeVar("T")
 
@@ -20,7 +20,8 @@ class DependencyContainer:
         if cls in self.__instances:
             return self.__instances[cls]
 
-        # Inspeccionar la firma del constructor para recuperar los nombres de los argumentos
+        # Inspeccionar la firma del constructor
+        # para recuperar los nombres de los argumentos
         sig = inspect.signature(cls.__init__)
         args = [
             {"name": p.name, "annotation": p.annotation}
@@ -28,7 +29,8 @@ class DependencyContainer:
             if p.name != "self"
         ]
 
-        # Crear un diccionario de argumentos a partir de los nombres de los argumentos y sus valores
+        # Crear un diccionario de argumentos
+        # a partir de los nombres de los argumentos y sus valores
         args_dict = {}
         for arg in args:
             if arg["annotation"] is inspect._empty:
@@ -41,5 +43,8 @@ class DependencyContainer:
 
         return instance
 
-    def set(self, cls: Type[T], instance: T) -> None:
-        self.__instances[cls] = instance
+    def set(self, cls: Type[T], instance: T | Type[T]) -> None:
+        if inspect.isclass(instance):
+            self.__instances[cls] = self.get(instance)
+        else:
+            self.__instances[cls] = instance

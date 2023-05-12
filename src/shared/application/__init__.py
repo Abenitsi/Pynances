@@ -1,11 +1,7 @@
-from src.shared.application.middleware import (
-    db_middleware,
-    log_middleware,
-    publish_events,
-)
+from src.shared.application.middleware import log_middleware
 
 middleware_chain = [
-    db_middleware,
+    # db_middleware,
     log_middleware,
-    publish_events,
+    # publish_events,
 ]
