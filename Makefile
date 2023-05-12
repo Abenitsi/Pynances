@@ -2,13 +2,13 @@
 #  Install targets  #
 #####################
 
-init:
-	/usr/local/bin/python3 -m venv venv
-	install
-	pip install -r requirements.txt
-
 # Ready the project to start developing
 install: install-dependencies pre-commit-install
+
+venv:
+	rm -rf venv
+	python3 -m venv venv
+	. venv/bin/activate
 
 # Install all the dependencies specified in requirements.txt
 install-dependencies:
@@ -28,8 +28,8 @@ pre-commit-run:
 	pre-commit run --all-files --config etc/config/pre-commit-config.yaml
 
 cq:
-	black src
-	mypy src
+	black core
+	mypy core
 	lint-imports
 
 test:
@@ -44,4 +44,25 @@ coverage-html: coverage-run
 coverage-run:
 	coverage run
 
-.PHONY: install install-dependencies pre-commit-install cq test coverage coverage-html coverage-run
+##########################
+#         Build          #
+##########################
+build:
+	@python ./etc/scripts/build.py
+
+##########################
+#         Hasura         #
+##########################
+start:
+	docker compose down -t 0
+	docker compose up -d
+	sleep 5
+	docker exec -ti pynances-graphql-engine-1 bash -c "cd /home/hasura && hasura metadata apply && hasura migrate apply --database-name pynances && hasura metadata reload"
+
+export:
+	docker exec -ti pynances-graphql-engine-1 bash -c "cd /home/hasura && hasura metadata export"
+
+create-migration:
+	docker exec -ti pynances-graphql-engine-1 bash -c "hasura migrate create '$(migration)' --database-name Postgres"
+
+.PHONY: install install-dependencies pre-commit-install cq test coverage coverage-html coverage-run build venv start export create-migration

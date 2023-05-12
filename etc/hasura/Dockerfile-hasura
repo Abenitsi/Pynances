@@ -4,5 +4,5 @@ RUN curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bas
 
 RUN cd /home/hasura && hasura init .
 
-COPY ./metadata/ ./home/hasura/metadata
-COPY ./migrations/ ./home/hasura/migrations
+COPY ./etc/hasura/metadata/ ./home/hasura/metadata
+COPY ./etc/hasura/migrations/ ./home/hasura/migrations

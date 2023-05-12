@@ -3,27 +3,27 @@ services:
   postgres:
     build:
       context: .
-      dockerfile: Dockerfile-postgres
+      dockerfile: ./etc/hasura/Dockerfile-postgres
     restart: always
     ports:
     - "5432:5432"
     environment:
       POSTGRES_PASSWORD: postgrespassword
     networks:
-      - api_nester-network
+      - code-network
 
   graphql-engine:
     build:
       context: .
-      dockerfile: Dockerfile-hasura
+      dockerfile: ./etc/hasura/Dockerfile-hasura
     ports:
     - "8080:8080"
     depends_on:
     - "postgres"
     restart: always
     volumes:
-      - ./metadata/:/home/hasura/metadata
-      - ./migrations/:/home/hasura/migrations
+      - ./etc/hasura/metadata/:/home/hasura/metadata
+      - ./etc/hasura/migrations/:/home/hasura/migrations
     environment:
       ## postgres database to store Hasura metadata
       HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
@@ -39,12 +39,12 @@ services:
       ## uncomment next line to set an admin secret
       # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
     networks:
-      - api_nester-network
+      - code-network
 
 volumes:
   db_data:
 
 #Docker Networks
 networks:
-  api_nester-network:
-    external: true
+  code-network:
+    driver: bridge

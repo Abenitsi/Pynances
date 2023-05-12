@@ -1,6 +1,5 @@
 FROM postgres:12
 
-RUN apt update && \
-    apt install -y postgresql-12-mysql-fdw
+RUN apt update
 
-COPY ./db.sql /docker-entrypoint-initdb.d/db.sql
+#COPY ./db.sql /docker-entrypoint-initdb.d/db.sql
