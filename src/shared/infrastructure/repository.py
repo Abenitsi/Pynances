@@ -22,7 +22,6 @@ class GenericDecorator(TypeDecorator):  # type: ignore
         self.parent_t = t.mro()[-2]
 
     def process_bind_param(self, value: object, dialect: Any) -> Any:
-        print(value, self.parent_t)
         if value is not None:
             return self.parent_t(value)
 

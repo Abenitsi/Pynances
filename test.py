@@ -1,13 +1,4 @@
 from src import CoreConfig
-from src.account.domain.model import (
-    Account,
-    AccountId,
-    AccountName,
-    AccountIban,
-    AccountType,
-    AccountAmount,
-    AccountHash,
-)
 
 from src.sdk import SDK
 
@@ -21,5 +12,10 @@ sdk = SDK(
     )
 )
 
-account = sdk.account.create()
-print(account)
+account = sdk.account.create(
+    name="My Account",
+    iban="My Iban",
+    amount=0,
+    type="savings",
+    hash="my hash 3",
+)

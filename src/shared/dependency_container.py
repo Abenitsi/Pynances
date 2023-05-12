@@ -43,8 +43,5 @@ class DependencyContainer:
 
         return instance
 
-    def set(self, cls: Type[T], instance: T | Type[T]) -> None:
-        if inspect.isclass(instance):
-            self.__instances[cls] = self.get(instance)
-        else:
-            self.__instances[cls] = instance
+    def set(self, cls: Type[T], instance: T) -> None:
+        self.__instances[cls] = instance

@@ -80,6 +80,5 @@ class EmailValueObject(NonEmptyStringValueObject):
 
 class NumericValueObject(ValidatedValueObject, float):
     def _validate(value: Any) -> None:
-        print(type(value))
         if not isinstance(value, float) and not isinstance(value, int):
             raise TypeError()

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src import AccountUoW
+from src.account.application.unit_of_work import AccountUoW
 from src.account.domain.model import (
     Account,
     AccountId,
@@ -13,20 +13,31 @@ from src.account.domain.model import (
 from src.shared.application.use_case import UseCase
 
 
+@dataclass(frozen=True)
+class CreateData:
+    name: str
+    iban: str
+    hash: str
+    amount: float
+    type: str
+
+    def account(self) -> Account:
+        return Account(
+            id=AccountId.rand(),
+            name=AccountName(self.name),
+            iban=AccountIban(self.iban),
+            hash=AccountHash(self.hash),
+            type=AccountType(self.type),
+            amount=AccountAmount(self.amount),
+        )
+
+
 @dataclass
 class Create(UseCase):
     uow: AccountUoW
 
-    def __call__(self) -> Account:
+    def __call__(self, data: CreateData) -> None:
         with self.uow:
-            account = Account(
-                id=AccountId.rand(),
-                name=AccountName("Cuenta"),
-                iban=AccountIban("Iban"),
-                hash=AccountHash("hash"),
-                type=AccountType("regular"),
-                amount=AccountAmount(0),
-            )
+            account = data.account()
             self.uow.accounts.save(account)
             self.uow.commit()
-            return account

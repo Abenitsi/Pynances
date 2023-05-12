@@ -6,8 +6,10 @@ from src.shared.infrastructure.connection import SQLAlchemyConnection
 class SQLAlchemyAccountRepository(AccountRepository):
     connection: SQLAlchemyConnection
 
-    def save(self, account: Account):
+    def save(self, account: Account) -> None:
         self.connection.write(account)
 
-    def get(self, account_id: AccountId):
-        pass
+    def get(self, account_id: AccountId) -> Account:
+        accounts = self.connection.read(Account, Account.id == account_id)
+        account: Account = accounts[0]
+        return account

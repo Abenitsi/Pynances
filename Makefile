@@ -47,8 +47,9 @@ coverage-run:
 ##########################
 #         Build          #
 ##########################
-build:
+build: install
 	@python ./etc/scripts/build.py
+	make install
 
 ##########################
 #         Hasura         #
