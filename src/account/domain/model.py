@@ -4,6 +4,7 @@ from src.shared.domain.aggregate_root import AggregateRoot
 from src.shared.domain.valueobject import (
     UUIDValueObject,
     NonEmptyStringValueObject,
+    NumericValueObject,
 )
 
 
@@ -23,11 +24,11 @@ class AccountHash(NonEmptyStringValueObject):
     pass
 
 
-class AccountAmount:
+class AccountAmount(NumericValueObject):
     pass
 
 
-class AccountType:
+class AccountType(NonEmptyStringValueObject):
     pass
 
 

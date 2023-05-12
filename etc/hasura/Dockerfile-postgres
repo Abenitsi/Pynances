@@ -1,5 +1,3 @@
 FROM postgres:12
 
 RUN apt update
-
-#COPY ./db.sql /docker-entrypoint-initdb.d/db.sql

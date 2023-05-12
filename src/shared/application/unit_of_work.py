@@ -11,5 +11,9 @@ class UnitOfWork(ABC):
     def rollback(self) -> None:
         pass
 
+    @abstractmethod
+    def commit(self) -> None:
+        pass
+
     def __exit__(self, *args: Any) -> None:
         self.rollback()

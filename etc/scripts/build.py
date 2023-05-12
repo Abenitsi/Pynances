@@ -75,6 +75,7 @@ class FunctionParser:
 
     def set_return_type(self, sig: inspect.Signature) -> None:
         return_type = "None"
+        print(sig.return_annotation)
         if sig.return_annotation is not None:
             module = sig.return_annotation.__module__
             return_type = sig.return_annotation

@@ -7,7 +7,7 @@ class SQLAlchemyAccountRepository(AccountRepository):
     connection: SQLAlchemyConnection
 
     def save(self, account: Account):
-        pass
+        self.connection.write(account)
 
     def get(self, account_id: AccountId):
         pass

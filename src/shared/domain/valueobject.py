@@ -24,11 +24,9 @@ class ValidatedValueObject(ABC):
 
 
 class StringValueObject(ValidatedValueObject, str):
-    @staticmethod
     def _validate(value: Any) -> None:
-        # if value is not isinstance(value, str):
-        #    raise TypeError("Invalid value")
-        pass
+        if not isinstance(value, str):
+            raise TypeError()
 
 
 class NonEmptyStringValueObject(StringValueObject):
@@ -78,3 +76,10 @@ class EmailValueObject(NonEmptyStringValueObject):
         )
         if not fullmatch(regex, value):
             raise InvalidEmailValue()
+
+
+class NumericValueObject(ValidatedValueObject, float):
+    def _validate(value: Any) -> None:
+        print(type(value))
+        if not isinstance(value, float) and not isinstance(value, int):
+            raise TypeError()

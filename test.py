@@ -21,4 +21,5 @@ sdk = SDK(
     )
 )
 
-sdk.account.create()
+account = sdk.account.create()
+print(account)

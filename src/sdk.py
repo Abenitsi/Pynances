@@ -1,5 +1,6 @@
-from src.shared.dependency_container import DependencyContainer
 from src import CoreConfig
+from src.shared.dependency_container import DependencyContainer
+from src.account.domain.model import Account
 from src.account.application.use_case import Create as CreateAccount
 
 
@@ -9,8 +10,8 @@ class AccountSDKContext:
     def __init__(self, container: DependencyContainer) -> None:
         self.__container = container
 
-    def create(self) -> None:
-        self.__container.get(CreateAccount)()
+    def create(self) -> Account:
+        return self.__container.get(CreateAccount)()
 
 
 class SDK:
