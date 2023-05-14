@@ -1,4 +1,5 @@
 import json
+from enum import Enum
 from typing import Any, Optional, Type
 
 from sqlalchemy import Dialect

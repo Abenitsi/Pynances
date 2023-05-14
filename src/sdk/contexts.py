@@ -1,6 +1,6 @@
-from src.account.application.use_case import CreateData
-from src.shared.dependency_container import DependencyContainer
 from src.account.application.use_case import Create as CreateAccount
+from src.shared.dependency_container import DependencyContainer
+from src.account.application.use_case import CreateData
 
 
 class AccountSDKContext:
@@ -9,13 +9,10 @@ class AccountSDKContext:
     def __init__(self, container: DependencyContainer) -> None:
         self.__container = container
 
-    def create(
-        self, name: str, iban: str, hash: str, amount: float, type: str
-    ) -> None:
+    def create(self, name: str, iban: str, amount: float, type: str) -> None:
         data = CreateData(
             name=name,
             iban=iban,
-            hash=hash,
             amount=amount,
             type=type,
         )

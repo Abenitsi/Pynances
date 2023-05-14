@@ -1,4 +1,7 @@
+import hashlib
 from dataclasses import dataclass
+from enum import StrEnum
+from typing import Self, Any
 
 from src.account.domain.events import AccountCreated
 from src.shared.domain.aggregate_root import AggregateRoot
@@ -6,7 +9,48 @@ from src.shared.domain.valueobject import (
     UUIDValueObject,
     NonEmptyStringValueObject,
     NumericValueObject,
+    StringValueObject,
+    TimestampValueObject,
 )
+
+
+class MovementId(UUIDValueObject):
+    pass
+
+
+class MovementConcept(NonEmptyStringValueObject):
+    pass
+
+
+class MovementDescription(StringValueObject):
+    pass
+
+
+class MovementAmount(NumericValueObject):
+    pass
+
+
+class MovementDate(TimestampValueObject):
+    pass
+
+
+class MovementCategory(str):
+    pass
+
+
+class MovementHash(NonEmptyStringValueObject):
+    pass
+
+
+@dataclass
+class Movement:
+    id: MovementId
+    concept: MovementConcept
+    description: MovementDescription
+    category: MovementCategory
+    amount: MovementAmount
+    date: MovementDate
+    hash: MovementHash
 
 
 class AccountId(UUIDValueObject):
@@ -22,15 +66,20 @@ class AccountIban(NonEmptyStringValueObject):
 
 
 class AccountHash(NonEmptyStringValueObject):
-    pass
+    @classmethod
+    def from_str(cls, hash_str: str) -> Self:
+        return AccountHash(
+            hashlib.sha256((str(hash_str).encode("utf-8"))).hexdigest()
+        )
 
 
 class AccountAmount(NumericValueObject):
     pass
 
 
-class AccountType(NonEmptyStringValueObject):
-    pass
+class AccountType(StrEnum):
+    REGULAR = "regular"
+    SAVING = "saving"
 
 
 @dataclass
@@ -41,13 +90,13 @@ class Account(AggregateRoot):
     hash: AccountHash
     amount: AccountAmount
     type: AccountType
+    movements: list[Movement]
 
     @classmethod
     def create(
         cls,
         name: AccountName,
         iban: AccountIban,
-        hash: AccountHash,
         type: AccountType,
         amount: AccountAmount,
     ):
@@ -55,9 +104,10 @@ class Account(AggregateRoot):
             id=AccountId.rand(),
             name=name,
             iban=iban,
-            hash=hash,
+            hash=AccountHash.from_str(str(iban)),
             type=type,
             amount=amount,
+            movements=list(),
         )
         account.record(
             AccountCreated.register({"account_id": str(account.id)})

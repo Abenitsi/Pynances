@@ -20,7 +20,9 @@ if __name__ == "__main__":
     context_classes = ""
     contexts_for_init = ""
     modules = ClassLocator.locate(
-        path="src", class_name=UseCase, skip_modules=["__pycache__", "sdk"]
+        path="src",
+        class_name=UseCase,
+        skip_modules=[".DS_Store", "__pycache__", "sdk"],
     )
     contexts: list[ContextParser] = []
     for module in modules:

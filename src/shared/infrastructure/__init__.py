@@ -45,6 +45,7 @@ try:
         path="src",
         class_name=DomainEvent,
         skip_modules=[
+            ".DS_Store",
             "__pycache__",
             "sdk",
             "infrastructure",

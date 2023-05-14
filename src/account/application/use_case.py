@@ -16,7 +16,6 @@ from src.shared.application.use_case import UseCase
 class CreateData:
     name: str
     iban: str
-    hash: str
     amount: float
     type: str
 
@@ -24,7 +23,6 @@ class CreateData:
         return Account.create(
             name=AccountName(self.name),
             iban=AccountIban(self.iban),
-            hash=AccountHash(self.hash),
             type=AccountType(self.type),
             amount=AccountAmount(self.amount),
         )
