@@ -5,12 +5,10 @@ from src.account.application.unit_of_work import (
 )
 from src.shared.domain.connection import ConnectionConfig
 from src.shared.dependency_container import DependencyContainer
-from src.shared.domain.domain_event import DomainEventRepository
 from src.shared.infrastructure.connection import (
     PostgreSQLAlchemyConnectionConfig,
 )
 import src.sdk.contexts as contexts
-from src.shared.infrastructure.repository import SqlAlchemyEventRepository
 
 
 class SDK:
