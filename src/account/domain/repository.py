@@ -4,6 +4,8 @@ from src.shared.domain.repositories import Repository
 
 
 class AccountRepository(Repository, ABC):
+    seen: set[Account]
+
     @abstractmethod
     def save(self, account: Account) -> None:
         pass

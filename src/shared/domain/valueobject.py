@@ -46,9 +46,9 @@ class UUIDValueObject(NonEmptyStringValueObject):
 
     @staticmethod
     def _validate(value: Any) -> None:
-        super(UUIDValueObject, UUIDValueObject)._validate(value)
+        super(UUIDValueObject, UUIDValueObject)._validate(str(value))
         try:
-            UUID(value)
+            UUID(str(value), version=4)
         except ValueError:
             raise InvalidIdValue()
 
@@ -78,7 +78,25 @@ class EmailValueObject(NonEmptyStringValueObject):
             raise InvalidEmailValue()
 
 
+class IntegerValueObject(ValidatedValueObject, int):
+    def _validate(value: Any) -> None:
+        if not isinstance(value, int):
+            raise TypeError()
+
+
 class NumericValueObject(ValidatedValueObject, float):
     def _validate(value: Any) -> None:
         if not isinstance(value, float) and not isinstance(value, int):
+            raise TypeError()
+
+
+class TimestampValueObject(float):
+    def _validate(value: Any) -> None:
+        if not isinstance(value, float) or value < 0:
+            raise TypeError()
+
+
+class DictValueObject(dict):
+    def _validate(value: Any) -> None:
+        if not isinstance(value, dict):
             raise TypeError()

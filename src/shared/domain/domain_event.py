@@ -1,25 +1,46 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any
 
-from src.shared.domain.valueobject import ULIDValueObject
+from src.shared.domain.valueobject import (
+    TimestampValueObject,
+    DictValueObject,
+    NonEmptyStringValueObject,
+    UUIDValueObject,
+)
 
 
-class DomainEventId(ULIDValueObject):
+class DomainEventId(UUIDValueObject):
     pass
 
 
-@dataclass(frozen=True, kw_only=True)
+class DomainEventOccurredAt(TimestampValueObject):
+    pass
+
+
+class DomainEventData(DictValueObject):
+    pass
+
+
+class DomainEventName(NonEmptyStringValueObject):
+    pass
+
+
+@dataclass
 class DomainEvent:
     id: DomainEventId
-    data: Any
-    occurred_at: datetime = datetime.now()
+    name: DomainEventName
+    occurred_at: DomainEventOccurredAt
+    data: DomainEventData
 
-
-@dataclass(frozen=True, kw_only=True)
-class UserCreatedEvent(DomainEvent):
-    data: int
+    @classmethod
+    def register(cls, data: dict):
+        return cls(
+            id=DomainEventId.rand(),
+            name=DomainEventName(cls.__module__ + "." + cls.__name__),
+            occurred_at=DomainEventOccurredAt(datetime.now().timestamp()),
+            data=DomainEventData(data),
+        )
 
 
 class DomainEventRepository(ABC):

@@ -6,8 +6,9 @@ from sqlalchemy.orm import Query, Session
 
 from src.shared.domain.aggregate_root import AggregateRoot
 from src.shared.domain.connection import Connection, ConnectionConfig
+from src.shared.domain.domain_event import DomainEvent
 
-T = TypeVar("T", bound=AggregateRoot)
+T = TypeVar("T", bound=AggregateRoot | DomainEvent)
 
 
 @dataclass(frozen=True)

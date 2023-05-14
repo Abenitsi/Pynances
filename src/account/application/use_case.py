@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from src.account.application.unit_of_work import AccountUoW
 from src.account.domain.model import (
     Account,
-    AccountId,
     AccountName,
     AccountIban,
     AccountHash,
@@ -22,8 +21,7 @@ class CreateData:
     type: str
 
     def account(self) -> Account:
-        return Account(
-            id=AccountId.rand(),
+        return Account.create(
             name=AccountName(self.name),
             iban=AccountIban(self.iban),
             hash=AccountHash(self.hash),

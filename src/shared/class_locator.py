@@ -13,7 +13,8 @@ class ClassLocator:
         cls, module_name: str, class_name: Type[T]
     ) -> list[Type[T]]:
         classes: list[Type[T]] = []
-        import_module(module_name)
+        if module_name not in sys.modules:
+            import_module(module_name)
         cls_members = inspect.getmembers(
             sys.modules[module_name], inspect.isclass
         )
@@ -38,7 +39,6 @@ class ClassLocator:
         modules = filter(
             lambda file: file not in skip_modules, os.listdir(f"./{path}")
         )
-
         for module in modules:
             if ".py" in module:
                 module_name = (
@@ -48,6 +48,8 @@ class ClassLocator:
                 if len(elements) > 0:
                     classes.append({"module": module_name, "classes": elements})  # type: ignore
             else:
-                classes += cls.locate("/".join([path, module]), class_name)
+                classes += cls.locate(
+                    "/".join([path, module]), class_name, skip_modules
+                )
 
         return classes
